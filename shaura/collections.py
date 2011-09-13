@@ -11,7 +11,6 @@ from pyramid.threadlocal import get_current_registry
 
 from shaura.interfaces import ICollection, IUnique
 from shaura_core.interfaces import IObjectManager
-from shaura_core.events import ObjectCreatedEvent, ObjectModifiedEvent
 from shaura.response import Created
 
 from shaura_json import utils as json
@@ -53,9 +52,8 @@ def add(context, request):
     except:
         raise httpexceptions.HTTPBadRequest()
 
-    # trigger event to store object and create uuid for it
-    event = ObjectCreatedEvent(obj)
-    request.registry.notify(event)
+    manager = request.registry.getUtility(IObjectManager)
+    manager.add(obj)
 
     return Created("%s/%s" % (request.url, IUnique(obj).uuid))
 
@@ -70,8 +68,9 @@ def get(context, request):
 
 def setUniqueId(event):
     if IUnique.providedBy(event.target):
+        # genrate UUID for new object
         IUnique(event.target).uuid = unicode(uuid())
-        # notify that the object was modified
+        # update object on datastore to save UUID
         registry = get_current_registry()
-        event = ObjectModifiedEvent(event.target)
-        registry.notify(event)
+        manager = registry.getUtility(IObjectManager)
+        manager.update(event.target)

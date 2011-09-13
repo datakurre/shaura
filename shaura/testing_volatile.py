@@ -3,7 +3,11 @@
 
 from zope.interface import implements
 
+from pyramid.threadlocal import get_current_registry
+
 from shaura_core.interfaces import IObjectManager
+from shaura_core.events import\
+    ObjectCreatedEvent, ObjectModifiedEvent, ObjectObsoletedEvent
 from shaura.interfaces import IUnique
 
 DATASTORE = {}
@@ -22,6 +26,24 @@ class ObjectManager(object):
 
         for result in DATASTORE.get(klass, {}).values():
             yield result
+
+    def add(self, obj):
+        """Add object to datastore"""
+        registry = get_current_registry()
+        event = ObjectCreatedEvent(obj)
+        registry.notify(event)
+
+    def update(self, obj):
+        """Update object on datastore"""
+        registry = get_current_registry()
+        event = ObjectModifiedEvent(obj)
+        registry.notify(event)
+
+    def delete(self, obj):
+        """Delete object from datastore"""
+        registry = get_current_registry()
+        event = ObjectObsoletedEvent(obj)
+        registry.notify(event)
 
 
 def putCreatedObject(event):
