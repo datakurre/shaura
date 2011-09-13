@@ -29,5 +29,8 @@ setup(name="shaura", version=version,
     "shaura_core",
     "shaura_json",
   ],
-  extras_require = {"test": ["corejet.core", "zope.testbrowser[wsgi]"]},
+  extras_require = {
+    "gae": ["shaura_gae"],
+    "test": ["corejet.core", "zope.testbrowser[wsgi]"]
+  },
 )
