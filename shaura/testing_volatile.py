@@ -8,7 +8,7 @@ from pyramid.threadlocal import get_current_registry
 from shaura_core.interfaces import IObjectManager
 from shaura_core.events import\
     ObjectCreatedEvent, ObjectModifiedEvent, ObjectObsoletedEvent
-from shaura.interfaces import IUnique
+from shaura.interfaces import ICollectable
 
 DATASTORE = {}
 
@@ -33,11 +33,23 @@ class ObjectManager(object):
         event = ObjectCreatedEvent(obj)
         registry.notify(event)
 
+        klass = event.target.__class__.__name__
+        uuid = ICollectable(event.target).uuid
+        if not klass in DATASTORE:
+            DATASTORE[klass] = {}
+        DATASTORE[klass][uuid] = event.target
+
     def update(self, obj):
         """Update object on datastore"""
         registry = get_current_registry()
         event = ObjectModifiedEvent(obj)
         registry.notify(event)
+
+        klass = event.target.__class__.__name__
+        uuid = ICollectable(event.target).uuid
+        if not klass in DATASTORE:
+            DATASTORE[klass] = {}
+        DATASTORE[klass][uuid] = event.target
 
     def delete(self, obj):
         """Delete object from datastore"""
@@ -45,18 +57,6 @@ class ObjectManager(object):
         event = ObjectObsoletedEvent(obj)
         registry.notify(event)
 
-
-def putCreatedObject(event):
-    """Object created lifecycle event"""
-    klass = event.target.__class__.__name__
-    uuid = IUnique(event.target).uuid
-    if not klass in DATASTORE:
-        DATASTORE[klass] = {}
-    DATASTORE[klass][uuid] = event.target
-
-
-def deleteObsoletedObject(event):
-    """Object obsoleted lifecycle event"""
-    klass = event.target.__class__.__name__
-    uuid = IUnique(event.target).uuid
-    del DATASTORE[klass][uuid]
+        klass = event.target.__class__.__name__
+        uuid = ICollectable(event.target).uuid
+        del DATASTORE[klass][uuid]

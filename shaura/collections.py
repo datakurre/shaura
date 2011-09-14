@@ -10,7 +10,7 @@ from zope.schema import getFieldNamesInOrder
 from pyramid import httpexceptions
 from pyramid.threadlocal import get_current_registry
 
-from shaura.interfaces import ICollection, IUnique
+from shaura.interfaces import ICollection, ICollectable
 from shaura_core.interfaces import IObjectManager
 from shaura.response import Ok, Created
 
@@ -45,7 +45,7 @@ class Collection(object):
 
 
 def list(context, request):
-    return [IUnique(obj).uuid for obj in context]
+    return [ICollectable(obj).uuid for obj in context]
 
 
 def create(context, request):
@@ -60,7 +60,7 @@ def create(context, request):
     manager = request.registry.getUtility(IObjectManager)
     manager.add(obj)
 
-    return Created("%s/%s" % (request.url, IUnique(obj).uuid))
+    return Created("%s/%s" % (request.url, ICollectable(obj).uuid))
 
 
 def read(context, request):
@@ -100,9 +100,9 @@ def delete(context, request):
 
 
 def setUniqueId(event):
-    if IUnique.providedBy(event.target):
+    if ICollectable.providedBy(event.target):
         # generate UUID for the (created) target object
-        IUnique(event.target).uuid = unicode(uuid())
+        ICollectable(event.target).uuid = unicode(uuid())
         # update object on datastore to make UUID persistent
         registry = get_current_registry()
         manager = registry.getUtility(IObjectManager)

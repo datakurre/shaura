@@ -10,17 +10,6 @@ from zope.i18nmessageid import MessageFactory as ZopeMessageFactory
 _ = ZopeMessageFactory("shaura")
 
 
-class IUnique(Interface):
-    """Universally unique identifier for an object"""
-
-    uuid = schema.ASCIILine(
-        title=_("generic_uuid",
-                default="Unique identifier"),
-        readonly=True,
-        required=False  # should be set by an event
-        )
-
-
 class ICollection(Interface):
     """Collections support RESTful GET (list) and POST (create)"""
 
@@ -38,3 +27,15 @@ class ICollection(Interface):
     def __getitem__(key):
         """Return the item with requested key from the collection"""
         pass
+
+
+class ICollectable(Interface):
+    """Collectable should support RESTful GET (read), PUT (update) and
+    DELETE"""
+
+    uuid = schema.ASCIILine(
+        title=_("generic_uuid",
+                default="Unique identifier"),
+        readonly=True,
+        required=False  # should be set by an event
+        )

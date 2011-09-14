@@ -7,19 +7,4 @@
     factory=".testing_volatile.ObjectManager"
     />
 
-  <subscriber
-    for="shaura_core.interfaces.IObjectCreatedEvent"
-    handler=".testing_volatile.putCreatedObject"
-    />
-
-  <subscriber
-    for="shaura_core.interfaces.IObjectModifiedEvent"
-    handler=".testing_volatile.putCreatedObject"
-    />
-
-  <subscriber
-    for="shaura_core.interfaces.IObjectObsoletedEvent"
-    handler=".testing_volatile.deleteObsoletedObject"
-    />
-
 </configure>

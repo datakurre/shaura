@@ -6,7 +6,7 @@ from zope.interface import Interface, implements
 
 from shaura_core.interfaces import IObject
 
-from shaura.interfaces import IUnique, ICollection
+from shaura.interfaces import ICollection, ICollectable
 from shaura.collections import Collection
 
 
@@ -53,7 +53,7 @@ class ITask(Interface):
 
 class Task(object):
     """Simple task"""
-    implements(IObject, IUnique, ITask)
+    implements(IObject, ICollectable, ITask)
 
     def __init__(self, uuid=None, title=None, due_date=None):
         self.uuid = uuid
