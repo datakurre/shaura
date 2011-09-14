@@ -103,7 +103,3 @@ def setUniqueId(event):
     if ICollectable.providedBy(event.target):
         # generate UUID for the (created) target object
         ICollectable(event.target).uuid = unicode(uuid())
-        # update object on datastore to make UUID persistent
-        registry = get_current_registry()
-        manager = registry.getUtility(IObjectManager)
-        manager.update(event.target)
