@@ -9,16 +9,14 @@
     />
 
   <!-- PUT and DELETE aliases for zope.testbrowser -->
-  <view
-    name="put"
+  <view name="put"
     request_method="POST"
     context="shaura_core.interfaces.IObject"
     view=".collections.update"
     renderer="json"
     />
 
-  <view
-    name="delete"
+  <view name="delete"
     request_method="POST"
     context="shaura_core.interfaces.IObject"
     view=".collections.delete"
