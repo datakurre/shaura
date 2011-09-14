@@ -3,7 +3,6 @@
   <include package="pyramid_zcml"/>
   <include package="shaura_json"/>
 
-  <!-- Actions -->
   <view
     request_method="GET"
     context=".interfaces.ICollection"
@@ -14,14 +13,27 @@
   <view
     request_method="POST"
     context=".interfaces.ICollection"
-    view=".collections.add"
+    view=".collections.create"
     />
 
-  <!-- Content -->
   <view
     request_method="GET"
     context="shaura_core.interfaces.IObject"
-    view=".collections.get"
+    view=".collections.read"
+    renderer="json"
+    />
+
+  <view
+    request_method="PUT"
+    context="shaura_core.interfaces.IObject"
+    view=".collections.update"
+    renderer="json"
+    />
+
+  <view
+    request_method="DELETE"
+    context="shaura_core.interfaces.IObject"
+    view=".collections.delete"
     renderer="json"
     />
 

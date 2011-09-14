@@ -12,7 +12,7 @@ class Response(object):
 
     status = "200 OK"
 
-    def __init__(self, body, content_type="text/html"):
+    def __init__(self, body="", content_type="text/html"):
         self.app_iter = [body]
         self.headerlist = [("Content-Type", content_type),
                            ("Content-Length", str(len(body)))]
@@ -26,9 +26,13 @@ class Response(object):
             return self.app_iter
 
 
+class Ok(Response):
+    status = "200 OK"  # this is just an alias for convenience
+
+
 class Created(Response):
     status = "201 CREATED"
 
     def __init__(self, location):
-        super(Created, self).__init__(str(), content_type="text/html")
+        super(Created, self).__init__()
         self.headerlist.append(("Location", location))
