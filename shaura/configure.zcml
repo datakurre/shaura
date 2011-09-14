@@ -18,21 +18,21 @@
 
   <view
     request_method="GET"
-    context="shaura_core.interfaces.IObject"
+    context=".interfaces.ICollectable"
     view=".collections.read"
     renderer="json"
     />
 
   <view
     request_method="PUT"
-    context="shaura_core.interfaces.IObject"
+    context=".interfaces.ICollectable"
     view=".collections.update"
     renderer="json"
     />
 
   <view
     request_method="DELETE"
-    context="shaura_core.interfaces.IObject"
+    context=".interfaces.ICollectable"
     view=".collections.delete"
     renderer="json"
     />
