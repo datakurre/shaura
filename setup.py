@@ -24,6 +24,7 @@ setup(name="shaura", version=version,
   install_requires=[
     "setuptools",
     # -*- Extra requirements: -*-
+    "simplejson",
     "pyramid",
     "pyramid_zcml",
     "shaura_core",
